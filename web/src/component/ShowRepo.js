@@ -10,6 +10,7 @@ class ShowRepo extends React.Component {
     this.state = {
       repo_data: [],
       languages: [],
+      isError: false,
     };
   }
 
@@ -43,23 +44,33 @@ class ShowRepo extends React.Component {
         this.setState({
           repo_data: this.repositories,
           languages: this.getLangauges(repoList),
+          isError: false,
         });
       })
       .catch((error) => {
-        console.log(error);
+        this.setState({
+          isError: true,
+        });
       });
   }
 
   render() {
+    if (this.state.isError) {
+      return <h3>A wild error appeard. Please, refresh</h3>;
+    }
+
     return (
-      <div>
+      <div className="container">
         <h1>SilverOrange Exercise</h1>
         <LanguageItem
           data={this.state.languages}
           languageCallback={this.handleLanguageClick}
         />
         {this.state.repo_data.map((repo) => (
-          <RepoItem key={repo.id} dataRepoItem={repo} />
+          <div key={repo.id}>
+            <RepoItem dataRepoItem={repo} />
+            <br />
+          </div>
         ))}
       </div>
     );
