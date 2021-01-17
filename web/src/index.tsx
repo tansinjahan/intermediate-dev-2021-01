@@ -1,12 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { App } from './App';
-
+import { ShowRepo } from './component/ShowRepo';
 import './index.css';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ShowRepo />
   </React.StrictMode>,
   document.getElementById('root')
 );
