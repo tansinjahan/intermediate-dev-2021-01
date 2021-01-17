@@ -13,6 +13,24 @@ class ShowRepo extends React.Component {
     };
   }
 
+  getLangauges = (repos) => {
+    const languagSet = new Set();
+    repos.forEach((repo) => {
+      languagSet.add(repo.language);
+    });
+    const languages = Array.from(languagSet);
+    languages.push('All');
+    return languages;
+  };
+
+  handleLanguageClick = (language) => {
+    this.setState({
+      repo_data: this.repositories.filter(
+        (repo) => repo.language === language || language === 'All'
+      ),
+    });
+  };
+
   componentDidMount() {
     axios
       .get('http://localhost:4000/repos')
@@ -24,6 +42,7 @@ class ShowRepo extends React.Component {
         this.repositories = repoList;
         this.setState({
           repo_data: this.repositories,
+          languages: this.getLangauges(repoList),
         });
       })
       .catch((error) => {
@@ -35,7 +54,10 @@ class ShowRepo extends React.Component {
     return (
       <div>
         <h1>SilverOrange Exercise</h1>
-        <LanguageItem />
+        <LanguageItem
+          data={this.state.languages}
+          languageCallback={this.handleLanguageClick}
+        />
         {this.state.repo_data.map((repo) => (
           <RepoItem key={repo.id} dataRepoItem={repo} />
         ))}
